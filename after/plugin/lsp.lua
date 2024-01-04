@@ -1,12 +1,14 @@
 local lsp = require("lsp-zero")
 
 lsp.preset("recommended")
-
-lsp.ensure_installed({
-    'tsserver',
-    'eslint',
-    'rust_analyzer',
+require('mason').setup({})
+require('mason-lspconfig').setup({
+  ensure_installed = {'tsserver', 'rust_analyzer'},
+  handlers = {
+    lsp.default_setup,
+  }
 })
+
 -- Fix Undefined global 'vim'
 lsp.configure('lua_ls', {
     settings = {
@@ -29,8 +31,11 @@ local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-d>'] = cmp.mapping.scroll_docs(4), -- Down
 })
 
-lsp.setup_nvim_cmp({
-    mapping = cmp_mappings
+local cmp_format = lsp.cmp_format()
+
+cmp.setup({
+  formatting = cmp_format,
+  mapping = cmp.mapping.preset.insert(cmp_mappings)
 })
 
 lsp.set_preferences({
@@ -57,21 +62,6 @@ lsp.on_attach(function(client, bufnr)
     vim.keymap.set("n", "<leader>rn", function() vim.lsp.buf.rename() end, opts)
     vim.keymap.set("i", "<C-h>", function() vim.lsp.buf.signature_help() end, opts)
 end)
-
-
--- Rust Tools (inlay hints)
-local rt = require("rust-tools")
-
-rt.setup({
-    server = {
-        on_attach = function(_, bufnr)
-            -- Hover actions
-            vim.keymap.set("n", "<C-space>", rt.hover_actions.hover_actions, { buffer = bufnr })
-            -- Code action groups
-            vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
-        end,
-    },
-})
 
 lsp.setup()
 
