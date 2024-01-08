@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 
 -- opens netrw
-vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
+-- vim.keymap.set("n", "<leader>e", vim.cmd.Ex)
 
 -- joins the current line with the line below
 vim.keymap.set("n", "J", "mzJ`z")
@@ -30,9 +30,6 @@ vim.keymap.set("n", "<leader>Y", "\"+Y")
 -- delete without saving to register
 vim.keymap.set("n", "<leader>d", "\"_d")
 vim.keymap.set("v", "<leader>d", "\"_d")
-
--- This is going to get me cancelled
-vim.keymap.set("i", "<C-c>", "<Esc>")
 
 -- remove default binding
 vim.keymap.set("n", "Q", "<nop>")
